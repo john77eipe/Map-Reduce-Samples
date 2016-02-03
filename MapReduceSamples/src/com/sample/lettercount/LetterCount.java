@@ -3,7 +3,9 @@ package com.sample.lettercount;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
+
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -12,8 +14,14 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
 
-public class LetterCount {
+/**
+Letter count sample that uses Tool Runner
+ *
+ */
+public class LetterCount extends Configured implements Tool {
 
 	public static class MapperStub extends Mapper<Object, Text, Text, IntWritable> {
 
@@ -48,10 +56,15 @@ public class LetterCount {
 	}
 
 	public static void main(String[] args) throws Exception {
-
 		System.out.println("*******Letter-Count-Job starts********");
+		System.exit(ToolRunner.run(new Configuration(), new LetterCount(), args));
+		System.out.println("********Letter-Count-Job execution starts********");
+		
+	}
 
-		Configuration conf = new Configuration();
+	@Override
+	public int run(String[] args) throws Exception {
+		Configuration conf = getConf();
 		Job job = Job.getInstance(conf, "Letter-Count-Job");
 		job.setJarByClass(LetterCount.class);
 		job.setMapperClass(MapperStub.class);
@@ -61,9 +74,9 @@ public class LetterCount {
 		job.setOutputValueClass(IntWritable.class);
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
-		System.out.println("********Letter-Count-Job execution starts********");
-		System.exit(job.waitForCompletion(true) ? 0 : 1);
-		System.out.println("********Letter-Count-Job terminated********");
+		return job.waitForCompletion(true) ? 0 : 1;
 	}
+
+
 
 }

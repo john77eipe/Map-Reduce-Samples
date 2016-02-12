@@ -28,7 +28,7 @@ in
 tic
  *
  */
-public class AnagramFinder {
+public class AnagramFinder  {
 
 	public static class MapperStub extends Mapper<Object, Text, Text, Text> {
 
@@ -47,7 +47,6 @@ public class AnagramFinder {
 	public static class ReducerStub extends Reducer<Text, Text, Text, Iterable<Text>> {
 
 		public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-		
 			context.write(key, values);
 		}
 	}
@@ -61,7 +60,7 @@ public class AnagramFinder {
 		job.setCombinerClass(ReducerStub.class);
 		job.setReducerClass(ReducerStub.class);
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
+		job.setOutputValueClass(Text.class);
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		System.exit(job.waitForCompletion(true) ? 0 : 1);

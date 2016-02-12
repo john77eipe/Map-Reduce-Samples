@@ -58,7 +58,7 @@ public class LetterCount extends Configured implements Tool {
 	public static void main(String[] args) throws Exception {
 		System.out.println("*******Letter-Count-Job starts********");
 		System.exit(ToolRunner.run(new Configuration(), new LetterCount(), args));
-		System.out.println("********Letter-Count-Job execution starts********");
+		System.out.println("********Letter-Count-Job ends********");
 		
 	}
 

@@ -1,4 +1,4 @@
-package com.sample.records;
+package com.sample.custom.values;
 
 import java.io.DataInput;
 import java.io.DataOutput;
